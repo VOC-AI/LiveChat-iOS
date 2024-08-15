@@ -14,6 +14,10 @@ public class VOCLiveChatViewController: UIViewController, WKUIDelegate {
     var vocWebview: VOCWebView!
     var params: VOCLiveChatParams?
     
+    public func getWebView() -> WKWebView {
+        return self.vocWebview
+    }
+    
     // 声明一个 title 属性
     public var pageTitle: String? {
         didSet {
