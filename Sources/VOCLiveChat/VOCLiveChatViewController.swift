@@ -95,6 +95,7 @@ public class VOCLiveChatViewController: UIViewController, WKUIDelegate {
     private func configureWebView() {
         vocWebview = VOCWebView(frame: self.view.bounds)
         vocWebview.uiDelegate = self
+        vocWebview.scrollView.bounces = false
         vocWebview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.view.addSubview(vocWebview)
     }
