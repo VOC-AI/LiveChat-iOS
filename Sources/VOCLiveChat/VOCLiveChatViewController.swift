@@ -19,6 +19,7 @@ public class VOCLiveChatViewController: UIViewController, WKUIDelegate {
     var vocWebview: VOCWebView!
     var params: VOCLiveChatParams?
     
+    
     public func webview() -> WKWebView {
         return self.vocWebview
     }
