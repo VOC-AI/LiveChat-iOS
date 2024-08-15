@@ -9,7 +9,7 @@ class VOCLiveChatTests: XCTestCase {
         app.launch()
         
         // 创建一个测试用例的 ViewController 实例
-        let testViewController = VOCLiveChatViewController(params: VOCLiveChatParams(id: 16778, token: "66BDB35EE4B0B8D56C02EC33"))
+        let testViewController = VOCLiveChatViewController(params: VOCLiveChatParams(id: 1, token: ""))
         // 创建一个测试窗口
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = testViewController
