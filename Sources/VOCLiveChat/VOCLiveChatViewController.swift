@@ -15,7 +15,7 @@ public class VOCLiveChatViewController: UIViewController, WKUIDelegate {
     var params: VOCLiveChatParams?
     
     // 声明一个 title 属性
-    var pageTitle: String? {
+    public var pageTitle: String? {
         didSet {
             // 在 title 更新时设置导航栏标题
             self.navigationItem.title = pageTitle
