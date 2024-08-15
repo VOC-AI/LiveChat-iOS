@@ -7,6 +7,9 @@
 
 import Foundation
 
+/**
+ Delegate of VOCLiveChatViewController
+ */
 public protocol VOCLiveChatDelegate {
     
     /**

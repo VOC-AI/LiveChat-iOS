@@ -2,14 +2,19 @@ import UIKit
 import WebKit
 import Foundation
 
+/**
+ Encode URI Component as javascript
+ */
 func encodeURIComponent(_ string: String) -> String? {
-    // 定义允许在 URL 中出现的字符集
     let allowedCharacters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
-    // 使用 `addingPercentEncoding` 方法进行编码
     return string.addingPercentEncoding(withAllowedCharacters: allowedCharacters)
 }
 
+
 public class VOCLiveChatViewController: UIViewController, WKUIDelegate {
+    /**
+     Set delegate
+     */
     public var uiDelegate: VOCLiveChatDelegate?
     var vocWebview: VOCWebView!
     var params: VOCLiveChatParams?
@@ -18,7 +23,7 @@ public class VOCLiveChatViewController: UIViewController, WKUIDelegate {
         return self.vocWebview
     }
     
-    // 声明一个 title 属性
+    // to set title for navigationItem
     public var pageTitle: String? {
         didSet {
             // 在 title 更新时设置导航栏标题
@@ -26,7 +31,7 @@ public class VOCLiveChatViewController: UIViewController, WKUIDelegate {
         }
     }
     
-    // 初始化方法
+    // init
     public init(params: VOCLiveChatParams) {
         super.init(nibName: nil, bundle: nil)
         self.params = params
@@ -38,17 +43,17 @@ public class VOCLiveChatViewController: UIViewController, WKUIDelegate {
         }
     }
     
-    // 从 xib 或 storyboard 创建时调用的初始化方法
+    // init
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
     
     
     private func buildURL(withBase baseURL: String, params: VOCLiveChatParams) -> URL? {
-        // 创建 URLComponents 实例
+        // start to build url
         var urlComponents = URLComponents(string: baseURL)
         
-        // 构建查询项数组
+        // consturct queries
         let queryParams: [String: String?] = [
             "id": "\(params.id)",
             "token": params.token,
@@ -66,10 +71,9 @@ public class VOCLiveChatViewController: UIViewController, WKUIDelegate {
             URLQueryItem(name: key, value: value)
         }
         
-        // 将查询项数组赋值给 URLComponents
         urlComponents?.queryItems = queryItems
         
-        // 返回构建的 URL
+        // return built url
         return urlComponents?.url
     }
     
@@ -84,14 +88,13 @@ public class VOCLiveChatViewController: UIViewController, WKUIDelegate {
         return nil
     }
     
-    // 视图加载完成后调用
+    // config webview
     public override func viewDidLoad() {
         super.viewDidLoad()
-        // 配置 WKWebView 并将其添加到视图中
         configureWebView()
     }
     
-    // 配置 WKWebView
+    // config webview
     private func configureWebView() {
         vocWebview = VOCWebView(frame: self.view.bounds)
         vocWebview.uiDelegate = self
