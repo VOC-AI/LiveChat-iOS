@@ -10,7 +10,7 @@ func encodeURIComponent(_ string: String) -> String? {
 }
 
 public class VOCLiveChatViewController: UIViewController, WKUIDelegate {
-    var uiDelegate: VOCLiveChatDelegate?
+    public var uiDelegate: VOCLiveChatDelegate?
     var vocWebview: VOCWebView!
     var params: VOCLiveChatParams?
     
@@ -55,9 +55,9 @@ public class VOCLiveChatViewController: UIViewController, WKUIDelegate {
             "lang": (params.lang != nil) ? "\(params.lang?.rawValue ?? "")" : nil,
             "encrypt": "\(params.encrypt ?? false ? "true" : "")",
         ]
-//        if let email = params.email {
-//            queryParams["email"] = encodeURIComponent(email)
-//        }
+        //        if let email = params.email {
+        //            queryParams["email"] = encodeURIComponent(email)
+        //        }
         let queryItems = queryParams.map { key, value in
             URLQueryItem(name: key, value: value)
         }
