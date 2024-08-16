@@ -61,6 +61,17 @@ public struct VOCLiveChatParams {
      The language setting of user interface.
      */
     public var lang: VOCLiveChatSystemLang?
+    
+    /**
+     Whether to render livechat header
+     */
+    public var noHeader: Bool?
+    
+    /**
+     Whether to integrate with no VOC brand
+     */
+    public var noBrand: Bool?
+
     /**
      If the passed email is encrypted
      */
@@ -69,10 +80,24 @@ public struct VOCLiveChatParams {
      If it's test environment
      */
     public var isTest: Bool?
-    
+        
     /**
      Default behavior when open link from the livechat
      */
     public var openLinkType: VOCLiveChatLinkOpenType?
     
+    /**
+     Skill id
+     */
+    public var skill_id: String?
+    
+    /**
+     Channel id
+     */
+    public var channelid: String?
+    
+    /**
+     Other params
+     */
+    public var otherParams: Dictionary<String, String>?
 }

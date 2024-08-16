@@ -11,7 +11,7 @@ func encodeURIComponent(_ string: String) -> String? {
 }
 
 
-public class VOCLiveChatViewController: UIViewController, WKUIDelegate {
+public class VOCLiveChatViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     /**
      Set delegate
      */
@@ -49,13 +49,12 @@ public class VOCLiveChatViewController: UIViewController, WKUIDelegate {
         super.init(coder: coder)
     }
     
-    
     private func buildURL(withBase baseURL: String, params: VOCLiveChatParams) -> URL? {
         // start to build url
         var urlComponents = URLComponents(string: baseURL)
         
         // consturct queries
-        let queryParams: [String: String?] = [
+        var queryParams: [String: String?] = [
             "id": "\(params.id)",
             "token": params.token,
             "brand": params.brand,
@@ -64,7 +63,16 @@ public class VOCLiveChatViewController: UIViewController, WKUIDelegate {
             "language": params.language,
             "lang": (params.lang != nil) ? "\(params.lang?.rawValue ?? "")" : nil,
             "encrypt": "\(params.encrypt ?? false ? "true" : "")",
+            "noHeader": "\(params.noHeader ?? false ? "true" : "")",
+            "noBrand": "\(params.noBrand ?? false ? "true" : "")",
+            "channelid": params.channelid,
+            "skill_id": params.skill_id,
         ]
+        
+        if let otherParams = params.otherParams {
+            queryParams.merge(otherParams) { (_, new) in new }
+        }
+        
         //        if let email = params.email {
         //            queryParams["email"] = encodeURIComponent(email)
         //        }
@@ -92,19 +100,46 @@ public class VOCLiveChatViewController: UIViewController, WKUIDelegate {
     // config webview
     public override func viewDidLoad() {
         super.viewDidLoad()
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
         configureWebView()
     }
     
     // config webview
     private func configureWebView() {
         vocWebview = VOCWebView(frame: self.view.bounds)
+        vocWebview.navigationDelegate = self
         vocWebview.uiDelegate = self
         vocWebview.scrollView.bounces = false
         vocWebview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.view.addSubview(vocWebview)
     }
     
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.adjustWebViewLayout()
+    }
     
+    private func adjustWebViewLayout() {
+        let origin = CGPoint(x: view.safeAreaInsets.left, y: view.safeAreaInsets.top)
+        let width = self.view.bounds.size.width - view.safeAreaInsets.left - view.safeAreaInsets.right
+        var height = self.view.bounds.size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom
+        let size = CGSize(width: width, height: height)
+        
+        var navigationBarHeight = 44.0
+        if let navigationController = self.navigationController {
+            let navBarFrame = navigationController.navigationBar.frame
+            navigationBarHeight = navBarFrame.height
+            height = height - navigationBarHeight
+        }
+        
+        self.vocWebview?.frame = CGRect(origin: origin, size: size)
+    }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        vocWebview.frame = self.view.bounds
+    }
     
     public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         if navigationAction.navigationType == .linkActivated || navigationAction.navigationType == .other, let url = navigationAction.request.url {
