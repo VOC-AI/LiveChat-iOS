@@ -54,7 +54,7 @@ struct ContentView: View {
                     OldContentView()
                         .edgesIgnoringSafeArea(.all)
                 }.padding(0)
-                    .navigationTitle("主页")
+                    .navigationTitle("Title")
             }
         } else {
             // Fallback on earlier versions
